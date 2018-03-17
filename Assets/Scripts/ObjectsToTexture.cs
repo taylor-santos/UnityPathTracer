@@ -176,6 +176,7 @@ public class ObjectsToTexture : MonoBehaviour {
 		List<Matrix4x4> transformations = new List<Matrix4x4>();
 		List<Matrix4x4> inverse_transformations = new List<Matrix4x4>();
 		List<Vector4> colors = new List<Vector4>();
+		List<float> indices = new List<float>();
 		List<float> brightnesses = new List<float>();
 		List<float> lights = new List<float>();
 		for (int i=0; i<MFs.Count; ++i){
@@ -183,6 +184,7 @@ public class ObjectsToTexture : MonoBehaviour {
 			transformations.Add(MF.transform.localToWorldMatrix);
 			inverse_transformations.Add(MF.transform.localToWorldMatrix.inverse);
 			colors.Add((Vector4)mats[i].color);
+			indices.Add(mats[i].GetFloat("_Index"));
 			float brightness = mats[i].GetFloat("_Brightness");
 			brightnesses.Add(Mathf.Max(0, brightness));
 			if (brightness > 0){
@@ -192,6 +194,7 @@ public class ObjectsToTexture : MonoBehaviour {
 		Shader.SetGlobalMatrixArray("_Transformations", transformations);
 		Shader.SetGlobalMatrixArray("_InverseTransformations", inverse_transformations);
 		Shader.SetGlobalVectorArray("_Colors", colors);
+		Shader.SetGlobalFloatArray("_Indices", indices);
 		Shader.SetGlobalFloatArray("_Brightnesses", brightnesses);
 		Shader.SetGlobalFloatArray("_Lights", lights);
 		Shader.SetGlobalFloat("_LightCount", lights.Count);
